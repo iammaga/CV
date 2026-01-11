@@ -48,11 +48,18 @@
         }
         
         .hover-scale {
-            transition: transform 0.3s ease;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, box-shadow;
         }
-        
+
         .hover-scale:hover {
-            transform: scale(1.05);
+            transform: scale(1.03) translateY(-10px) !important;
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.3) !important;
+        }
+
+        .hover-scale:active {
+            transform: scale(1.01) translateY(-5px) !important;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .social-icon {
@@ -104,39 +111,83 @@
         
         .fade-in-section {
             opacity: 0;
-            transform: translateY(40px);
             transition: opacity 1s ease-out, transform 1s ease-out;
         }
-        
+
         .fade-in-section.is-visible {
             opacity: 1;
-            transform: translateY(0);
+            animation: fadeInSection 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fadeInSection {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .experience-item {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-            transition-delay: 0.2s;
+            padding-left: 24px;
+            border-left: 3px solid transparent;
+            position: relative;
         }
-        
-        .experience-item:nth-child(2) {
-            transition-delay: 0.4s;
-        }
-        
-        .experience-item:nth-child(3) {
-            transition-delay: 0.6s;
-        }
-        
+
         .experience-item.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+            animation: fadeInExperience 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
-        
+
+        .experience-item.is-visible:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .experience-item.is-visible:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .experience-item.is-visible:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeInExperience {
+            0% {
+                opacity: 0;
+                transform: translateX(-40px) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        .experience-item:hover {
+            border-left-color: #ff6b35;
+            padding-left: 28px;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -3px;
+            top: 0;
+            width: 3px;
+            height: 0;
+            background: linear-gradient(180deg, #ff6b35 0%, #f7931e 100%);
+            transition: height 0.4s ease;
+        }
+
+        .experience-item:hover::before {
+            height: 100%;
+        }
+
         .arrow-icon {
             transition: transform 0.3s ease;
         }
-        
+
         .experience-item:hover .arrow-icon {
             transform: translate(5px, -5px);
         }
@@ -148,14 +199,25 @@
             align-items: center;
             justify-content: center;
             border-radius: 12px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background-color: #2a2a2a;
             color: #9ca3af;
+            position: relative;
         }
 
         .skill-icon:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .skill-icon:hover::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            opacity: 0.2;
+            z-index: -1;
         }
 
         .skill-icon.html:hover {
@@ -208,6 +270,15 @@
             color: white;
         }
 
+        .skill-icon.oracle:hover {
+            background-color: #f80000;
+            color: white;
+        }
+
+        .skill-icon.oracle:hover img {
+            filter: brightness(0) invert(1);
+        }
+
         .skill-icon.github:hover {
             background-color: #333;
             color: white;
@@ -252,35 +323,521 @@
 
         .skill-item {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
         }
 
         .skill-item.is-visible {
+            animation: fadeInSkill 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fadeInSkill {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            user-select: none;
+        }
+
+        .language-switcher:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+        }
+
+        .language-switcher:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .language-icon {
+            width: 28px;
+            height: 28px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        /* Flip animation for language change */
+        @keyframes flipLang {
+            0% {
+                transform: rotateY(0deg);
+            }
+            50% {
+                transform: rotateY(90deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: rotateY(0deg);
+            }
+        }
+
+        .language-switching {
+            animation: flipLang 0.6s ease;
+        }
+
+        /* Pulse animation on hover */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(255, 107, 53, 0.6);
+            }
+        }
+
+        .language-switcher:hover {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Fade animation for text changes */
+        @keyframes fadeText {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .text-switching {
+            animation: fadeText 0.4s ease;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 640px) {
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+                width: 48px;
+                height: 48px;
+            }
+
+            .language-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 380px) {
+            .language-switcher {
+                top: 8px;
+                right: 8px;
+                width: 44px;
+                height: 44px;
+            }
+
+            .language-icon {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        /* Typing animation */
+        .typing-text {
+            display: inline-block;
+            border-right: 3px solid #ff6b35;
+            padding-right: 5px;
+            animation: blink 0.7s step-end infinite;
+            visibility: hidden;
+            min-height: 1em;
+        }
+
+        @keyframes blink {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: #ff6b35;
+            }
+        }
+
+        .typing-text.finished {
+            border-right: none;
+            animation: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b35 #1a1a1a;
+        }
+
+        /* Arrow button in Orange Card */
+        .arrow-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .arrow-button:hover {
+            transform: translateY(-3px) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+            animation: pulse 1.5s infinite;
+        }
+
+        .arrow-button:active {
+            transform: translateY(-1px) scale(1.05);
+        }
+
+        /* Profile Card Animation */
+        .profile-card-animate {
+            opacity: 0;
+            animation: fadeInUpSmooth 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUpSmooth {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Profile Image Hover Effect */
+        .profile-image {
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .profile-image:hover {
+            transform: scale(1.04) rotate(1deg);
+            filter: brightness(1.08);
+        }
+
+        /* Social Icons Animation */
+        .social-icon-animate {
+            opacity: 0;
+            animation: fadeInSocial 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fadeInSocial {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .social-icon-animate:nth-child(1) { animation-delay: 0.8s; }
+        .social-icon-animate:nth-child(2) { animation-delay: 0.9s; }
+        .social-icon-animate:nth-child(3) { animation-delay: 1s; }
+        .social-icon-animate:nth-child(4) { animation-delay: 1.1s; }
+        .social-icon-animate:nth-child(5) { animation-delay: 1.2s; }
+
+        /* Main Content Animation */
+        .main-content-animate {
+            opacity: 0;
+            animation: fadeInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fadeInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .main-content-animate.delay-1 { animation-delay: 0.3s; }
+        .main-content-animate.delay-2 { animation-delay: 0.5s; }
+        .main-content-animate.delay-3 { animation-delay: 0.7s; }
+
+        /* Statistics Animation */
+        .stat-item-animate {
+            opacity: 0;
+            animation: scaleIn 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-item-animate:nth-child(1) { animation-delay: 0.6s; }
+        .stat-item-animate:nth-child(2) { animation-delay: 0.7s; }
+
+        .stat-label {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+            animation-delay: 0.9s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Orange Card Animation */
+        .orange-card-animate {
+            opacity: 0;
+            animation: cardAppear 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 0.9s;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Profile Description Animation */
+        .profile-description-animate {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            animation-delay: 0.6s;
+        }
+
+        /* Profile Name Animation */
+        .profile-name-animate {
+            opacity: 0;
+            animation: fadeInName 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeInName {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer Animation */
+        .footer-animate {
+            opacity: 0;
+        }
+
+        .footer-animate.is-visible {
+            animation: fadeInFooter 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fadeInFooter {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dotted decoration animation */
+        .dotted-decoration {
+            opacity: 0;
+            animation: spinIn 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes spinIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-180deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            overflow-x: hidden;
+            max-width: 100vw;
+            position: relative;
+        }
+
+        /* Prevent horizontal scroll on all containers */
+        * {
+            box-sizing: border-box;
+        }
+
+        .w-full, .max-w-5xl {
+            max-width: 100%;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            z-index: 1000;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .scroll-to-top.visible {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        .scroll-to-top:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .scroll-icon {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        /* Mobile optimization for scroll button */
+        @media (max-width: 640px) {
+            .scroll-to-top {
+                width: 48px;
+                height: 48px;
+                bottom: 70px;
+                right: 10px;
+            }
+
+            .scroll-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .scroll-to-top {
+                bottom: 60px;
+                right: 8px;
+                width: 44px;
+                height: 44px;
+            }
+
+            .scroll-icon {
+                width: 22px;
+                height: 22px;
+            }
         }
     </style>
 </head>
-<body class="bg-dark-bg text-white font-sans overflow-x-hidden">
-    <div class="w-full w-screen flex items-center justify-center p-4 lg:p-8">
+<body class="bg-dark-bg text-white font-sans">
+    <!-- Language Switcher -->
+    <div class="language-switcher" id="languageSwitcher">
+        <svg class="language-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+        </svg>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <svg xmlns="http://www.w3.org/2000/svg" class="scroll-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </div>
+    <div class="w-full flex items-center justify-center p-4 lg:p-8">
         <div class="max-w-5xl grid grid-cols-1 lg:grid-cols-2 items-center">
             <!-- Left Side - Profile Card -->
             <div class="w-auto flex justify-center lg:justify-start lg:max-w-2xl">
-                <div class="bg-white rounded-3xl p-8 w-full sm:max-w-sm mx-4 sm:mx-0 h-full relative hover-scale">
+                <div class="bg-white rounded-3xl p-8 w-full sm:max-w-sm mx-4 sm:mx-0 h-full relative hover-scale profile-card-animate">
                     <!-- Profile Image with Gradient Background -->
                     <div class="rounded-2xl h-96 mb-6 relative overflow-hidden">
                         <div class="absolute inset-0 flex items-start justify-center">
                             <!-- <div class="w-32 h-40 bg-black rounded-t-full opacity-80"></div> -->
-                            <img src="./images/photo_5447506785196961111_y.jpg" alt="photo_5447506785196961111_y" class="w-full sm:w-auto sm:h-auto object-cover relative z-1 rounded-2xl shadow-lg">
+                            <img src="./images/photo_5447506785196961111_y.jpg" alt="photo_5447506785196961111_y" class="w-full sm:w-auto sm:h-auto object-cover relative z-1 rounded-2xl shadow-lg profile-image">
                         </div>
                         <!-- Dotted decoration -->
-                        <div class="absolute top-4 left-4 w-16 h-16 dotted-line opacity-40 rounded-full"></div>
+                        <div class="absolute top-4 left-4 w-16 h-16 dotted-line opacity-40 rounded-full dotted-decoration"></div>
                     </div>
-                    
+
                     <!-- Name -->
-                    <h2 class="text-black text-4xl font-black text-center mb-4">Muhammad Zikirzoda</h2>
-                    
+                    <h2 class="text-black text-4xl font-black text-center mb-4 profile-name-animate" data-i18n="profile.name">Muhammad Zikirzoda</h2>
+
                     <!-- Orange dot with dotted line -->
                     <div class="flex justify-center mb-4">
                         <div class="relative">
@@ -288,44 +845,44 @@
                             <div class="absolute top-4 left-2 w-px h-8 border-l-2 border-dashed border-orange-gradient-start"></div> -->
                         </div>
                     </div>
-                    
+
                     <!-- Description -->
-                    <p class="text-gray-400 text-center text-lg font-bold leading-relaxed">
+                    <p class="text-gray-400 text-center text-lg font-bold leading-relaxed profile-description-animate" data-i18n="profile.description">
                         A Software Engineer who has developed countless innovative solutions.
                     </p>
 
                     <!-- Social Links -->
                     <div class="flex justify-center mt-8 space-x-3">
                         <!-- LinkedIn -->
-                        <a href="https://www.linkedin.com/in/muxammad-zikirzoda-303044310/" class="social-icon linkedin" aria-label="LinkedIn">
+                        <a href="https://www.linkedin.com/in/muxammad-zikirzoda-303044310/" class="social-icon linkedin social-icon-animate" aria-label="LinkedIn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                             </svg>
                         </a>
                         
                         <!-- GitHub -->
-                        <a href="https://github.com/iammaga" class="social-icon github" aria-label="GitHub">
+                        <a href="https://github.com/iammaga" class="social-icon github social-icon-animate" aria-label="GitHub">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                             </svg>
                         </a>
                         
                         <!-- Telegram -->
-                        <a href="https://t.me/Alg0rix" class="social-icon telegram" aria-label="Telegram">
+                        <a href="https://t.me/Alg0rix" class="social-icon telegram social-icon-animate" aria-label="Telegram">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.568 7.341c-.115.54-.489.674-.989.419l-2.74-2.02-1.323 1.276c-.148.148-.271.271-.489.271-.245 0-.204-.089-.286-.286l-.643-2.076-2.621-.61c-.566-.131-.566-.566.12-.848l10.223-3.95c.466-.182.874.271.716.483z"/>
                             </svg>
                         </a>
                         
                         <!-- Instagram -->
-                        <a href="https://www.instagram.com/magajr_/" class="social-icon instagram" aria-label="Instagram">
+                        <a href="https://www.instagram.com/magajr_/" class="social-icon instagram social-icon-animate" aria-label="Instagram">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                             </svg>
                         </a>
 
                         <!-- Gmail -->
-                        <a href="https://mail.google.com/mail/u/0/muxammad.zikirzoda@gmail.com" class="social-icon gmail" aria-label="Gmail">
+                        <a href="https://mail.google.com/mail/u/0/muxammad.zikirzoda@gmail.com" class="social-icon gmail social-icon-animate" aria-label="Gmail">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
                             </svg>
@@ -337,36 +894,36 @@
             <!-- Right Side - Main Content -->
             <div class="w-auto items-center space-y-12 sm:mx-12 my-12 mx-4">
                 <!-- Main Title -->
-                <div>
+                <div class="main-content-animate delay-1">
                     <h1 class="text-4xl lg:text-7xl font-black text-gray-300 leading-none pt-12 pb-12 text-start lg:text-left">
-                        SOFTWARE<br>
-                        <span class="text-gray-600">ENGINEER</span>
+                        <span class="typing-text" id="typingText1" data-i18n="main.title1"></span><br>
+                        <span class="text-gray-600 typing-text" id="typingText2" data-i18n="main.title2"></span>
                     </h1>
-                    <p class="text-gray-400 text-lg leading-relaxed w-auto">
+                    <p class="text-gray-400 text-lg leading-relaxed w-auto" data-i18n="main.description">
                         I am passionate about software development and microservice architecture design, especially using Laravel. I am interested in process automation, increasing efficiency and maintaining clean architecture in projects.
                     </p>
                 </div>
-                
+
                 <!-- Statistics -->
-                <div class="grid grid-cols-3 gap-8">
-                    <div class="text-center">
-                        <div class="text-4xl lg:text-5xl font-bold text-white mb-2 animate-counter" data-target="5">+5</div>
-                        <div class="text-gray-500 text-sm uppercase tracking-wider">
+                <div class="grid grid-cols-3 gap-8 main-content-animate delay-2">
+                    <div class="text-center stat-item-animate">
+                        <div class="text-4xl lg:text-5xl font-bold text-white mb-2 animate-counter" data-target="5">5+</div>
+                        <div class="text-gray-500 text-sm uppercase tracking-wider stat-label" data-i18n="stats.years" data-i18n-html="true">
                             YEARS OF<br>EXPERIENCE
                         </div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl lg:text-5xl font-bold text-white mb-2 animate-counter" data-target="46">+46</div>
-                        <div class="text-gray-500 text-sm uppercase tracking-wider">
+                    <div class="text-center stat-item-animate">
+                        <div class="text-4xl lg:text-5xl font-bold text-white mb-2 animate-counter" data-target="46">46+</div>
+                        <div class="text-gray-500 text-sm uppercase tracking-wider stat-label" data-i18n="stats.projects" data-i18n-html="true">
                             PROJECTS<br>COMPLETED
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Skill Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-12">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-12 main-content-animate delay-3">
                     <!-- Orange Card -->
-                    <div class="bg-orange-card rounded-2xl p-6 hover-scale cursor-pointer">
+                    <div class="bg-orange-card rounded-2xl p-6 hover-scale cursor-pointer orange-card-animate">
                         <div class="items-center mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white mr-3 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -376,9 +933,9 @@
                             </h3>
                         </div>
                         <div class="flex justify-end mt-8">
-                            <a href="#skills">
-                                <div class="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <a href="#skills" class="arrow-button-link">
+                                <div class="arrow-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
                             </div>
@@ -419,10 +976,10 @@
     <div class="flex items-center justify-center p-4 lg:p-8 fade-in-section sm:mx-12 mx-4">
         <div class="max-w-5xl w-full my-12">
             <div class="mb-16">
-                <h2 class="text-4xl lg:text-7xl font-black text-white leading-none mb-2">
-                    +5 YEARS OF
+                <h2 class="text-4xl lg:text-7xl font-black text-white leading-none mb-2" data-i18n="experience.title1">
+                    5+ YEARS OF
                 </h2>
-                <h2 class="text-4xl lg:text-7xl font-black text-gray-600 leading-none">
+                <h2 class="text-4xl lg:text-7xl font-black text-gray-600 leading-none" data-i18n="experience.title2">
                     EXPERIENCE
                 </h2>
             </div>
@@ -433,7 +990,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-3xl font-bold text-white mb-4">ICB</h3>
-                            <span class="text-gray-400 text-lg max-w-2xl mb-4">
+                            <span class="text-gray-400 text-lg max-w-2xl mb-4" data-i18n="experience.icb" data-i18n-html="true">
                                 I work on the server side of the bank's corporate systems. I develop and support backend services, and participate in designing the architecture and integration of internal and external systems.<br>
                                 - Development and maintenance of backend logic (REST API);<br>
                                 - Database design and optimisation;<br>
@@ -454,12 +1011,12 @@
                     </div>
                 </div>
                 
-                <!-- Experience Item 1 -->
+                <!-- Experience Item 2 -->
                 <div class="experience-item">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-3xl font-bold text-white mb-4">PAYKAR</h3>
-                            <span class="text-gray-400 text-lg max-w-2xl mb-4">
+                            <span class="text-gray-400 text-lg max-w-2xl mb-4" data-i18n="experience.paykar" data-i18n-html="true">
                                 I am fully responsible for the backend part of the project: from architecture design to deployment and support.<br>
                                 - I develop and maintain backend services on PHP;<br>
                                 - I design and optimize databases;<br>
@@ -476,24 +1033,24 @@
                     </div>
                 </div>
                 
-                <!-- Experience Item 2 -->
+                <!-- Experience Item 3 -->
                 <div class="experience-item">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-3xl font-bold text-white mb-4">MENTOR</h3>
-                            <p class="text-gray-400 text-lg max-w-2xl mb-4">
+                            <p class="text-gray-400 text-lg max-w-2xl mb-4" data-i18n="experience.mentor">
                                 I explain the basics in simple language, give practice, support at the start. My goal is to make entry into IT understandable and accessible.
                             </p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Experience Item 3 -->
+                <!-- Experience Item 4 -->
                 <div class="experience-item">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-3xl font-bold text-white mb-4">LIVO</h3>
-                            <span class="text-gray-400 text-lg max-w-2xl mb-4">
+                            <span class="text-gray-400 text-lg max-w-2xl mb-4" data-i18n="experience.livo" data-i18n-html="true">
                                 Worked on the Navbat project with full responsibility for the backend part, including database design and integration of external APIs.<br>
                                 - Development and support of the online booking system on Laravel;<br>
                                 - Integration with the SMS service Payvand for notifications;<br>
@@ -509,12 +1066,12 @@
                     </div>
                 </div>
                 
-                <!-- Experience Item 4 -->
+                <!-- Experience Item 5 -->
                 <div class="experience-item">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-3xl font-bold text-white mb-4">ENIAK</h3>
-                            <p class="text-gray-400 text-lg max-w-2xl mb-4">
+                            <p class="text-gray-400 text-lg max-w-2xl mb-4" data-i18n="experience.eniak">
                                 I worked at Eniak, where I worked on CMS-based projects and front-end development. My main tasks were creating and customizing websites, working with HTML, CSS, JavaScript, and integrating various plugins and modules. This experience helped me deepen my knowledge of web development and strengthen my skills in creating user interfaces.
                             </p>
                         </div>
@@ -528,10 +1085,10 @@
     <div id="skills" class="flex justify-center p-4 lg:p-8 fade-in-section sm:mx-12 mx-4 my-12">
         <div class="max-w-5xl w-full">
             <div class="mb-16 text-start">
-                <h2 class="text-4xl lg:text-7xl font-black text-white leading-none mb-2">
+                <h2 class="text-3xl sm:text-4xl lg:text-7xl font-black text-white leading-none mb-2" data-i18n="skills.title1">
                     PROGRAMMING
                 </h2>
-                <h2 class="text-4xl lg:text-7xl font-black text-gray-600 leading-none">
+                <h2 class="text-3xl sm:text-4xl lg:text-7xl font-black text-gray-600 leading-none" data-i18n="skills.title2">
                     SKILLS
                 </h2>
             </div>
@@ -617,6 +1174,14 @@
                     <p class="text-gray-400 text-sm font-medium">PostgreSQL</p>
                 </div>
 
+                <!-- Oracle -->
+                <div class="skill-item text-center">
+                    <div class="skill-icon oracle mx-auto mb-3">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle Icon" class="icon" style="width: 50px; height: 50px;"/>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium">Oracle</p>
+                </div>
+
                 <!-- GitHub -->
                 <div class="skill-item text-center">
                     <div class="skill-icon github mx-auto mb-3">
@@ -677,58 +1242,217 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark-bg py-8 mt-16">
+    <footer class="bg-dark-bg py-8 mt-16 footer-animate" id="footer">
         <div class="max-w-5xl mx-auto px-4 text-center">
             <p class="text-gray-400 text-sm flex justify-center items-center gap-1 flex-wrap">
-                Made with 
+                <span data-i18n="footer.made">Made with</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 
-                            5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 
-                            2.09C13.09 3.81 14.76 3 16.5 
-                            3 19.58 3 22 5.42 22 8.5c0 
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2
+                            5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5
+                            2.09C13.09 3.81 14.76 3 16.5
+                            3 19.58 3 22 5.42 22 8.5c0
                             3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg> 
-                by <span class="text-orange-card font-medium">Muhammad Zikirzoda</span>.
+                </svg>
+                <span data-i18n="footer.by">by</span> <span class="text-orange-card font-medium" data-i18n="footer.name">Muhammad Zikirzoda</span>.
             </p>
         </div>
     </footer>
 
 
     <script>
+        // Translations
+        const translations = {
+            en: {
+                profile: {
+                    name: "Muhammad Zikirzoda",
+                    description: "A Software Engineer who has developed countless innovative solutions."
+                },
+                main: {
+                    title1: "SOFTWARE",
+                    title2: "ENGINEER",
+                    description: "I am passionate about software development and microservice architecture design, especially using Laravel. I am interested in process automation, increasing efficiency and maintaining clean architecture in projects."
+                },
+                stats: {
+                    years: "YEARS OF<br>EXPERIENCE",
+                    projects: "PROJECTS<br>COMPLETED"
+                },
+                experience: {
+                    title1: "5+ YEARS OF",
+                    title2: "EXPERIENCE",
+                    icb: "I work on the server side of the bank's corporate systems. I develop and support backend services, and participate in designing the architecture and integration of internal and external systems.<br>- Development and maintenance of backend logic (REST API);<br>- Database design and optimisation;<br>- Implementation of business logic and banking processes;<br>- Integration with external services and internal systems;<br>- Error handling, logging, improving service stability.<br>- Refactoring and support for existing code;<br>- Participation in code review and team development.<br>Skills:<br>- PHP, Laravel;<br>- REST API, MVC;<br>- MySQL / PostgreSQL / Oracle;<br>- Docker, deployment & server configuration;<br>- Git, Composer;<br>- Refactoring, logging, code review.",
+                    paykar: "I am fully responsible for the backend part of the project: from architecture design to deployment and support.<br>- I develop and maintain backend services on PHP;<br>- I design and optimize databases;<br>- I integrate external services and APIs;<br>- I maintain and improve existing functionality;<br>- I interact with the frontend team and product managers.<br>Skills:<br>- Laravel, PHP, MySQL;<br>- API integration;<br>- Working with Git and CI/CD<br>- Docker, deployment & server configuration.",
+                    mentor: "I explain the basics in simple language, give practice, support at the start. My goal is to make entry into IT understandable and accessible.",
+                    livo: "Worked on the Navbat project with full responsibility for the backend part, including database design and integration of external APIs.<br>- Development and support of the online booking system on Laravel;<br>- Integration with the SMS service Payvand for notifications;<br>- Access management and role system for clients and masters;<br>- Optimization of work with databases.<br>Skills:<br>- Laravel, PHP, MySQL;<br>- API integration;<br>- Working with Git and GitHub Actions;<br>- Deployment and configuration of environments.",
+                    eniak: "I worked at Eniak, where I worked on CMS-based projects and front-end development. My main tasks were creating and customizing websites, working with HTML, CSS, JavaScript, and integrating various plugins and modules. This experience helped me deepen my knowledge of web development and strengthen my skills in creating user interfaces."
+                },
+                skills: {
+                    title1: "PROGRAMMING",
+                    title2: "SKILLS"
+                },
+                footer: {
+                    made: "Made with",
+                    by: "by",
+                    name: "Muhammad Zikirzoda"
+                }
+            },
+            ru: {
+                profile: {
+                    name: "Мухаммад Зикирзода",
+                    description: "Инженер-программист, создавший множество инновационных решений."
+                },
+                main: {
+                    title1: "ПРОГРАММИСТ",
+                    title2: "РАЗРАБОТЧИК",
+                    description: "Увлечен разработкой ПО и проектированием микросервисной архитектуры, особенно на Laravel. Фокусируюсь на автоматизации процессов, повышении эффективности и поддержании чистой архитектуры проектов."
+                },
+                stats: {
+                    years: "ЛЕТ<br>ОПЫТА",
+                    projects: "ПРОЕКТОВ<br>ЗАВЕРШЕНО"
+                },
+                experience: {
+                    title1: "5+ ЛЕТ",
+                    title2: "ОПЫТА",
+                    icb: "Занимаюсь backend-разработкой корпоративных банковских систем. Разрабатываю и поддерживаю серверные сервисы, проектирую архитектуру и интегрирую внутренние и внешние системы.<br>- Разработка и поддержка backend-логики (REST API)<br>- Проектирование и оптимизация баз данных<br>- Реализация бизнес-логики и банковских процессов<br>- Интеграция внешних сервисов и внутренних систем<br>- Обработка ошибок, логирование, повышение стабильности сервисов<br>- Рефакторинг и поддержка существующего кода<br>- Участие в code review и развитии команды<br>Технологии:<br>- PHP, Laravel<br>- REST API, MVC<br>- MySQL / PostgreSQL / Oracle<br>- Docker, деплой и настройка серверов<br>- Git, Composer<br>- Рефакторинг, логирование, code review",
+                    paykar: "Полная ответственность за backend-часть проекта: от проектирования архитектуры до развертывания и поддержки.<br>- Разработка и поддержка backend-сервисов на PHP<br>- Проектирование и оптимизация баз данных<br>- Интеграция внешних сервисов и API<br>- Поддержка и улучшение существующей функциональности<br>- Взаимодействие с frontend-командой и продакт-менеджерами<br>Технологии:<br>- Laravel, PHP, MySQL<br>- Интеграция API<br>- Работа с Git и CI/CD<br>- Docker, деплой и настройка серверов",
+                    mentor: "Объясняю основы простым языком, даю практические задания, поддерживаю на старте карьеры. Моя цель — сделать вход в IT понятным и доступным для каждого.",
+                    livo: "Работал над проектом Navbat с полной ответственностью за backend, включая проектирование БД и интеграцию внешних API.<br>- Разработка и поддержка системы онлайн-записи на Laravel<br>- Интеграция с SMS-сервисом Payvand для уведомлений<br>- Управление доступом и система ролей для клиентов и мастеров<br>- Оптимизация работы с базами данных<br>Технологии:<br>- Laravel, PHP, MySQL<br>- Интеграция API<br>- Работа с Git и GitHub Actions<br>- Деплой и настройка окружений",
+                    eniak: "Работал в Eniak над проектами на CMS и frontend-разработкой. Создавал и кастомизировал сайты, работал с HTML, CSS, JavaScript, интегрировал плагины и модули. Этот опыт помог углубить знания веб-разработки и укрепить навыки создания пользовательских интерфейсов."
+                },
+                skills: {
+                    title1: "НАВЫКИ",
+                    title2: "ПРОГРАММИРОВАНИЯ"
+                },
+                footer: {
+                    made: "Сделано с",
+                    by: "",
+                    name: "Мухаммад Зикирзода"
+                }
+            }
+        };
+
+        // Language switching functionality
+        let currentLanguage = localStorage.getItem('language') || 'en';
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+
+            const switcher = document.getElementById('languageSwitcher');
+
+            // Add flip animation to the switcher button
+            switcher.classList.add('language-switching');
+            setTimeout(() => {
+                switcher.classList.remove('language-switching');
+            }, 600);
+
+            // Update all elements with data-i18n attribute with fade effect
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                // Skip typing animation elements
+                if (element.id === 'typingText1' || element.id === 'typingText2') {
+                    return;
+                }
+
+                const key = element.getAttribute('data-i18n');
+                const keys = key.split('.');
+                let translation = translations[lang];
+
+                for (const k of keys) {
+                    translation = translation[k];
+                }
+
+                // Add fade animation
+                element.classList.add('text-switching');
+
+                setTimeout(() => {
+                    if (element.hasAttribute('data-i18n-html')) {
+                        element.innerHTML = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+
+                    setTimeout(() => {
+                        element.classList.remove('text-switching');
+                    }, 400);
+                }, 200);
+            });
+        }
+
+        // Typing animation function
+        function typeText(element, text, delay = 100) {
+            return new Promise((resolve) => {
+                let index = 0;
+                element.textContent = '';
+                element.style.visibility = 'visible';
+
+                const interval = setInterval(() => {
+                    if (index < text.length) {
+                        element.textContent += text[index];
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                        element.classList.add('finished');
+                        resolve();
+                    }
+                }, delay);
+            });
+        }
+
+        // Start typing animations
+        async function startTypingAnimations() {
+            const text1 = document.getElementById('typingText1');
+            const text2 = document.getElementById('typingText2');
+
+            const lang = currentLanguage || 'en';
+            const firstText = translations[lang].main.title1;
+            const secondText = translations[lang].main.title2;
+
+            await typeText(text1, firstText, 80);
+            await new Promise(resolve => setTimeout(resolve, 200));
+            await typeText(text2, secondText, 80);
+        }
+
         // Animate counters on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize language
+            switchLanguage(currentLanguage);
+
+            // Start typing animation after a short delay
+            setTimeout(() => {
+                startTypingAnimations();
+            }, 500);
+
+            // Add click event to language switcher
+            document.getElementById('languageSwitcher').addEventListener('click', function() {
+                const newLang = currentLanguage === 'en' ? 'ru' : 'en';
+                switchLanguage(newLang);
+
+                // Restart typing animation when language changes
+                setTimeout(() => {
+                    document.getElementById('typingText1').classList.remove('finished');
+                    document.getElementById('typingText2').classList.remove('finished');
+                    startTypingAnimations();
+                }, 600);
+            });
             const counters = document.querySelectorAll('.animate-counter');
-            
+
             counters.forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-target'));
-                const prefix = counter.textContent.includes('+') ? '+' : '';
+                const hasPlus = counter.textContent.includes('+');
                 let current = 0;
                 const increment = target / 50;
-                
+
                 const updateCounter = () => {
                     if (current < target) {
                         current += increment;
-                        counter.textContent = prefix + Math.ceil(current);
+                        counter.textContent = Math.ceil(current) + (hasPlus ? '+' : '');
                         requestAnimationFrame(updateCounter);
                     } else {
-                        counter.textContent = prefix + target;
+                        counter.textContent = target + (hasPlus ? '+' : '');
                     }
                 };
-                
+
                 // Start animation after a small delay
                 setTimeout(updateCounter, 500);
-            });
-            
-            // Add hover effects to cards
-            const cards = document.querySelectorAll('.hover-scale');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                });
             });
             
             // Scroll animation for fade-in sections
@@ -778,6 +1502,41 @@
             window.addEventListener('scroll', function() {
                 // Removed parallax effect to keep profile image within container
             });
+
+            // Scroll to top button functionality
+            const scrollToTopButton = document.getElementById('scrollToTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.add('visible');
+                } else {
+                    scrollToTopButton.classList.remove('visible');
+                }
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Footer animation on scroll
+            const footer = document.getElementById('footer');
+            const checkFooter = () => {
+                const triggerBottom = window.innerHeight * 0.9;
+                const footerTop = footer.getBoundingClientRect().top;
+
+                if (footerTop < triggerBottom) {
+                    footer.classList.add('is-visible');
+                }
+            };
+
+            // Check footer on initial load
+            checkFooter();
+
+            // Check footer on scroll
+            window.addEventListener('scroll', checkFooter);
         });
     </script>
 </body>
