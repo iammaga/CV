@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muhammad Zikirzoda - Software Engineer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -729,6 +730,46 @@
             }
         }
 
+        /* 3D Canvas Container */
+        .three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeIn3D 2s ease-out 1s forwards;
+        }
+
+        @keyframes fadeIn3D {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .three-container canvas {
+            display: block;
+        }
+
+        /* Ensure content is above 3D background */
+        body > *:not(.three-container):not(.scroll-progress):not(.language-switcher):not(.scroll-to-top):not(.cursor-outer):not(.cursor-inner):not(.cursor-trail) {
+            position: relative;
+            z-index: 1;
+        }
+
+        .scroll-progress {
+            z-index: 9999 !important;
+        }
+
+        .language-switcher {
+            z-index: 1000 !important;
+        }
+
+        .scroll-to-top {
+            z-index: 1000 !important;
+        }
+
         /* Smooth scroll behavior - prevent horizontal scroll */
         html {
             scroll-behavior: smooth;
@@ -823,11 +864,127 @@
                 height: 22px;
             }
         }
+
+        /* ==================== CUSTOM CURSOR ==================== */
+        .cursor-outer {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 107, 53, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform 0.15s ease-out, width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-inner {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform 0.08s ease-out, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Cursor hover states */
+        .cursor-outer.cursor-hover {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(255, 107, 53, 0.8);
+            background-color: rgba(255, 107, 53, 0.1);
+        }
+
+        .cursor-inner.cursor-hover {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0.5;
+        }
+
+        /* Cursor click state */
+        .cursor-outer.cursor-click {
+            transform: translate(-50%, -50%) scale(0.8);
+            border-color: #ff6b35;
+        }
+
+        .cursor-inner.cursor-click {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        /* Cursor on text */
+        .cursor-outer.cursor-text {
+            width: 4px;
+            height: 30px;
+            border-radius: 2px;
+            border: none;
+            background-color: rgba(255, 107, 53, 0.8);
+        }
+
+        .cursor-inner.cursor-text {
+            opacity: 0;
+        }
+
+        /* Cursor magnetic effect for buttons */
+        .cursor-outer.cursor-magnetic {
+            width: 80px;
+            height: 80px;
+            border-color: rgba(255, 107, 53, 0.3);
+            background-color: rgba(255, 107, 53, 0.05);
+        }
+
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-outer,
+            .cursor-inner {
+                display: none !important;
+            }
+        }
+
+        /* Hide default cursor when custom cursor is active */
+        @media (hover: hover) and (pointer: fine) {
+            * {
+                cursor: none !important;
+            }
+        }
+
+        /* Cursor trail effect */
+        .cursor-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 107, 53, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99998;
+            transform: translate(-50%, -50%);
+            animation: trailFade 0.5s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+        }
     </style>
 </head>
 <body class="bg-dark-bg text-white font-sans">
+    <!-- Custom Cursor -->
+    <div class="cursor-outer" id="cursorOuter"></div>
+    <div class="cursor-inner" id="cursorInner"></div>
+
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- 3D Background -->
+    <div class="three-container" id="threeContainer"></div>
 
     <!-- Language Switcher -->
     <div class="language-switcher" id="languageSwitcher">
@@ -1282,6 +1439,196 @@
 
 
     <script>
+        // ==================== THREE.JS 3D BACKGROUND ====================
+        (function initThreeJS() {
+            const container = document.getElementById('threeContainer');
+            if (!container || typeof THREE === 'undefined') return;
+
+            // Scene setup
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            // Mouse tracking
+            const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
+            // Create gradient material for torus knot
+            const torusKnotGeometry = new THREE.TorusKnotGeometry(2.5, 0.8, 100, 16);
+            const torusKnotMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff6b35,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15
+            });
+            const torusKnot = new THREE.Mesh(torusKnotGeometry, torusKnotMaterial);
+            torusKnot.position.set(8, 0, -5);
+            scene.add(torusKnot);
+
+            // Create second torus knot (inner glow effect)
+            const torusKnotGeometry2 = new THREE.TorusKnotGeometry(2.4, 0.75, 100, 16);
+            const torusKnotMaterial2 = new THREE.MeshBasicMaterial({
+                color: 0xf7931e,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.1
+            });
+            const torusKnot2 = new THREE.Mesh(torusKnotGeometry2, torusKnotMaterial2);
+            torusKnot2.position.set(8, 0, -5);
+            scene.add(torusKnot2);
+
+            // Create icosahedron (left side)
+            const icosahedronGeometry = new THREE.IcosahedronGeometry(1.8, 1);
+            const icosahedronMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff6b35,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.12
+            });
+            const icosahedron = new THREE.Mesh(icosahedronGeometry, icosahedronMaterial);
+            icosahedron.position.set(-10, 3, -8);
+            scene.add(icosahedron);
+
+            // Create octahedron (bottom left)
+            const octahedronGeometry = new THREE.OctahedronGeometry(1.5, 0);
+            const octahedronMaterial = new THREE.MeshBasicMaterial({
+                color: 0xf7931e,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.1
+            });
+            const octahedron = new THREE.Mesh(octahedronGeometry, octahedronMaterial);
+            octahedron.position.set(-8, -5, -6);
+            scene.add(octahedron);
+
+            // Create floating particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 150;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 40;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.03,
+                color: 0xff6b35,
+                transparent: true,
+                opacity: 0.4
+            });
+            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+
+            // Create connecting lines (constellation effect)
+            const linesMaterial = new THREE.LineBasicMaterial({
+                color: 0xff6b35,
+                transparent: true,
+                opacity: 0.05
+            });
+
+            for (let i = 0; i < 20; i++) {
+                const points = [];
+                points.push(new THREE.Vector3(
+                    (Math.random() - 0.5) * 30,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 10 - 10
+                ));
+                points.push(new THREE.Vector3(
+                    (Math.random() - 0.5) * 30,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 10 - 10
+                ));
+                const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line(lineGeometry, linesMaterial);
+                scene.add(line);
+            }
+
+            camera.position.z = 10;
+
+            // Mouse move handler
+            document.addEventListener('mousemove', (event) => {
+                mouse.targetX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.targetY = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // Touch move handler for mobile
+            document.addEventListener('touchmove', (event) => {
+                if (event.touches.length > 0) {
+                    mouse.targetX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+                    mouse.targetY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+                }
+            });
+
+            // Scroll-based parallax
+            let scrollY = 0;
+            window.addEventListener('scroll', () => {
+                scrollY = window.pageYOffset;
+            });
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Smooth mouse follow
+                mouse.x += (mouse.targetX - mouse.x) * 0.05;
+                mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+                // Rotate torus knots
+                torusKnot.rotation.x += 0.003;
+                torusKnot.rotation.y += 0.005;
+                torusKnot.rotation.z += 0.002;
+
+                torusKnot2.rotation.x -= 0.002;
+                torusKnot2.rotation.y -= 0.004;
+                torusKnot2.rotation.z -= 0.001;
+
+                // Mouse interaction for torus knots
+                torusKnot.position.x = 8 + mouse.x * 2;
+                torusKnot.position.y = mouse.y * 2;
+                torusKnot2.position.x = 8 + mouse.x * 2;
+                torusKnot2.position.y = mouse.y * 2;
+
+                // Rotate icosahedron
+                icosahedron.rotation.x += 0.004;
+                icosahedron.rotation.y += 0.006;
+                icosahedron.position.x = -10 + mouse.x * 1.5;
+                icosahedron.position.y = 3 + mouse.y * 1.5;
+
+                // Rotate octahedron
+                octahedron.rotation.x += 0.005;
+                octahedron.rotation.y -= 0.003;
+                octahedron.position.x = -8 + mouse.x;
+                octahedron.position.y = -5 + mouse.y;
+
+                // Rotate particles slowly
+                particles.rotation.y += 0.0005;
+                particles.rotation.x += 0.0002;
+
+                // Scroll parallax effect
+                const scrollOffset = scrollY * 0.001;
+                torusKnot.position.z = -5 - scrollOffset * 2;
+                icosahedron.position.z = -8 + scrollOffset;
+                octahedron.position.z = -6 + scrollOffset * 0.5;
+
+                renderer.render(scene, camera);
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Start animation
+            animate();
+        })();
+
         // Translations
         const translations = {
             en: {
@@ -1598,6 +1945,166 @@
                     this.style.animation = 'none';
                     this.style.opacity = '1';
                     this.style.transform = 'translateY(0) scale(1)';
+                });
+            }
+
+            // ==================== CUSTOM CURSOR ====================
+            const cursorOuter = document.getElementById('cursorOuter');
+            const cursorInner = document.getElementById('cursorInner');
+
+            // Check if it's a touch device
+            const isTouchDevice = () => {
+                return (('ontouchstart' in window) ||
+                    (navigator.maxTouchPoints > 0) ||
+                    (navigator.msMaxTouchPoints > 0));
+            };
+
+            if (!isTouchDevice() && cursorOuter && cursorInner) {
+                let mouseX = 0, mouseY = 0;
+                let outerX = 0, outerY = 0;
+                let innerX = 0, innerY = 0;
+                let isVisible = false;
+                let trailTimeout;
+
+                // Hide cursor initially until mouse moves
+                cursorOuter.style.opacity = '0';
+                cursorInner.style.opacity = '0';
+
+                // Mouse move handler
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+
+                    // Show cursor on first move
+                    if (!isVisible) {
+                        isVisible = true;
+                        cursorOuter.style.opacity = '1';
+                        cursorInner.style.opacity = '1';
+                    }
+
+                    // Create trail effect (throttled)
+                    clearTimeout(trailTimeout);
+                    trailTimeout = setTimeout(() => {
+                        createTrail(mouseX, mouseY);
+                    }, 50);
+                });
+
+                // Smooth cursor animation
+                function animateCursor() {
+                    // Smooth follow for outer cursor (slower)
+                    outerX += (mouseX - outerX) * 0.15;
+                    outerY += (mouseY - outerY) * 0.15;
+
+                    // Faster follow for inner cursor
+                    innerX += (mouseX - innerX) * 0.25;
+                    innerY += (mouseY - innerY) * 0.25;
+
+                    cursorOuter.style.left = outerX + 'px';
+                    cursorOuter.style.top = outerY + 'px';
+
+                    cursorInner.style.left = innerX + 'px';
+                    cursorInner.style.top = innerY + 'px';
+
+                    requestAnimationFrame(animateCursor);
+                }
+                animateCursor();
+
+                // Create trail particles
+                function createTrail(x, y) {
+                    const trail = document.createElement('div');
+                    trail.className = 'cursor-trail';
+                    trail.style.left = x + 'px';
+                    trail.style.top = y + 'px';
+                    document.body.appendChild(trail);
+
+                    // Remove trail after animation
+                    setTimeout(() => {
+                        trail.remove();
+                    }, 500);
+                }
+
+                // Interactive elements - hover effect
+                const interactiveElements = document.querySelectorAll('a, button, .hover-scale, .social-icon, .skill-icon, .arrow-button, .language-switcher, .scroll-to-top, [role="button"]');
+
+                interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursorOuter.classList.add('cursor-hover');
+                        cursorInner.classList.add('cursor-hover');
+                    });
+
+                    el.addEventListener('mouseleave', () => {
+                        cursorOuter.classList.remove('cursor-hover');
+                        cursorInner.classList.remove('cursor-hover');
+                    });
+                });
+
+                // Magnetic effect for buttons
+                const magneticElements = document.querySelectorAll('.arrow-button, .language-switcher, .scroll-to-top, .social-icon');
+
+                magneticElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursorOuter.classList.add('cursor-magnetic');
+                    });
+
+                    el.addEventListener('mouseleave', () => {
+                        cursorOuter.classList.remove('cursor-magnetic');
+                    });
+
+                    // Magnetic pull effect
+                    el.addEventListener('mousemove', (e) => {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+
+                        const deltaX = (e.clientX - centerX) * 0.3;
+                        const deltaY = (e.clientY - centerY) * 0.3;
+
+                        el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                    });
+
+                    el.addEventListener('mouseleave', (e) => {
+                        el.style.transform = '';
+                    });
+                });
+
+                // Click effect
+                document.addEventListener('mousedown', () => {
+                    cursorOuter.classList.add('cursor-click');
+                    cursorInner.classList.add('cursor-click');
+                });
+
+                document.addEventListener('mouseup', () => {
+                    cursorOuter.classList.remove('cursor-click');
+                    cursorInner.classList.remove('cursor-click');
+                });
+
+                // Hide cursor when leaving window
+                document.addEventListener('mouseleave', () => {
+                    cursorOuter.style.opacity = '0';
+                    cursorInner.style.opacity = '0';
+                });
+
+                document.addEventListener('mouseenter', () => {
+                    cursorOuter.style.opacity = '1';
+                    cursorInner.style.opacity = '1';
+                });
+
+                // Text cursor effect for text elements
+                const textElements = document.querySelectorAll('p, h1, h2, h3, span:not(.typing-text)');
+
+                textElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        // Only apply if not hovering over a link inside
+                        if (!el.closest('a') && !el.closest('button')) {
+                            cursorOuter.classList.add('cursor-text');
+                            cursorInner.classList.add('cursor-text');
+                        }
+                    });
+
+                    el.addEventListener('mouseleave', () => {
+                        cursorOuter.classList.remove('cursor-text');
+                        cursorInner.classList.remove('cursor-text');
+                    });
                 });
             }
         });
