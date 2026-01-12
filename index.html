@@ -135,6 +135,7 @@
             padding-left: 24px;
             border-left: 3px solid transparent;
             position: relative;
+            transition: padding-left 0.4s ease, border-left-color 0.4s ease;
         }
 
         .experience-item.is-visible {
@@ -714,6 +715,21 @@
             }
         }
 
+        /* Long text handling */
+        .break-words {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        /* Skills title responsive sizing */
+        @media (max-width: 400px) {
+            .skills-title {
+                font-size: 1.5rem !important;
+            }
+        }
+
         /* Smooth scroll behavior */
         html {
             scroll-behavior: smooth;
@@ -1085,10 +1101,10 @@
     <div id="skills" class="flex justify-center p-4 lg:p-8 fade-in-section sm:mx-12 mx-4 my-12">
         <div class="max-w-5xl w-full">
             <div class="mb-16 text-start">
-                <h2 class="text-3xl sm:text-4xl lg:text-7xl font-black text-white leading-none mb-2" data-i18n="skills.title1">
+                <h2 class="text-2xl sm:text-4xl lg:text-7xl font-black text-white leading-none mb-2 break-words skills-title" data-i18n="skills.title1">
                     PROGRAMMING
                 </h2>
-                <h2 class="text-3xl sm:text-4xl lg:text-7xl font-black text-gray-600 leading-none" data-i18n="skills.title2">
+                <h2 class="text-2xl sm:text-4xl lg:text-7xl font-black text-gray-600 leading-none break-words skills-title" data-i18n="skills.title2">
                     SKILLS
                 </h2>
             </div>
@@ -1524,10 +1540,11 @@
             // Footer animation on scroll
             const footer = document.getElementById('footer');
             const checkFooter = () => {
-                const triggerBottom = window.innerHeight * 0.9;
+                const triggerBottom = window.innerHeight * 0.95;
                 const footerTop = footer.getBoundingClientRect().top;
+                const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;
 
-                if (footerTop < triggerBottom) {
+                if (footerTop < triggerBottom || isAtBottom) {
                     footer.classList.add('is-visible');
                 }
             };
@@ -1537,6 +1554,33 @@
 
             // Check footer on scroll
             window.addEventListener('scroll', checkFooter);
+
+            // Fallback: show footer after 3 seconds if still not visible
+            setTimeout(() => {
+                if (!footer.classList.contains('is-visible')) {
+                    footer.classList.add('is-visible');
+                }
+            }, 3000);
+
+            // Fix hover animation after entry animations complete
+            const profileCard = document.querySelector('.profile-card-animate');
+            const orangeCard = document.querySelector('.orange-card-animate');
+
+            if (profileCard) {
+                profileCard.addEventListener('animationend', function() {
+                    this.style.animation = 'none';
+                    this.style.opacity = '1';
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            }
+
+            if (orangeCard) {
+                orangeCard.addEventListener('animationend', function() {
+                    this.style.animation = 'none';
+                    this.style.opacity = '1';
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            }
         });
     </script>
 </body>
