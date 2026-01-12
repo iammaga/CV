@@ -479,31 +479,27 @@
             animation: none;
         }
 
-        /* Custom Scrollbar */
+        /* Hide scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            display: none;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
-            box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
-        }
-
-        /* Firefox scrollbar */
         * {
-            scrollbar-width: thin;
-            scrollbar-color: #ff6b35 #1a1a1a;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* Progress bar at top */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.7), 0 0 5px rgba(255, 107, 53, 0.5);
         }
 
         /* Arrow button in Orange Card */
@@ -715,29 +711,36 @@
             }
         }
 
-        /* Long text handling */
-        .break-words {
+        /* Section titles responsive sizing */
+        .section-title {
             word-wrap: break-word;
             overflow-wrap: break-word;
-            word-break: break-word;
-            hyphens: auto;
         }
 
-        /* Skills title responsive sizing */
-        @media (max-width: 400px) {
-            .skills-title {
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.75rem !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .section-title {
                 font-size: 1.5rem !important;
             }
         }
 
-        /* Smooth scroll behavior */
+        /* Smooth scroll behavior - prevent horizontal scroll */
         html {
             scroll-behavior: smooth;
             overflow-x: hidden;
+            overflow-y: auto;
+            height: 100%;
         }
 
         body {
             overflow-x: hidden;
+            overflow-y: visible;
+            min-height: 100%;
             max-width: 100vw;
             position: relative;
         }
@@ -747,7 +750,7 @@
             box-sizing: border-box;
         }
 
-        .w-full, .max-w-5xl {
+        .w-full, .max-w-5xl, .section-title {
             max-width: 100%;
         }
 
@@ -823,6 +826,9 @@
     </style>
 </head>
 <body class="bg-dark-bg text-white font-sans">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-- Language Switcher -->
     <div class="language-switcher" id="languageSwitcher">
         <svg class="language-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -992,10 +998,10 @@
     <div class="flex items-center justify-center p-4 lg:p-8 fade-in-section sm:mx-12 mx-4">
         <div class="max-w-5xl w-full my-12">
             <div class="mb-16">
-                <h2 class="text-4xl lg:text-7xl font-black text-white leading-none mb-2" data-i18n="experience.title1">
+                <h2 class="text-4xl lg:text-7xl font-black text-white leading-none mb-2 section-title" data-i18n="experience.title1">
                     5+ YEARS OF
                 </h2>
-                <h2 class="text-4xl lg:text-7xl font-black text-gray-600 leading-none" data-i18n="experience.title2">
+                <h2 class="text-4xl lg:text-7xl font-black text-gray-600 leading-none section-title" data-i18n="experience.title2">
                     EXPERIENCE
                 </h2>
             </div>
@@ -1101,10 +1107,10 @@
     <div id="skills" class="flex justify-center p-4 lg:p-8 fade-in-section sm:mx-12 mx-4 my-12">
         <div class="max-w-5xl w-full">
             <div class="mb-16 text-start">
-                <h2 class="text-2xl sm:text-4xl lg:text-7xl font-black text-white leading-none mb-2 break-words skills-title" data-i18n="skills.title1">
+                <h2 class="text-4xl lg:text-7xl font-black text-white leading-none mb-2 section-title" data-i18n="skills.title1">
                     PROGRAMMING
                 </h2>
-                <h2 class="text-2xl sm:text-4xl lg:text-7xl font-black text-gray-600 leading-none break-words skills-title" data-i18n="skills.title2">
+                <h2 class="text-4xl lg:text-7xl font-black text-gray-600 leading-none section-title" data-i18n="skills.title2">
                     SKILLS
                 </h2>
             </div>
@@ -1518,6 +1524,19 @@
             window.addEventListener('scroll', function() {
                 // Removed parallax effect to keep profile image within container
             });
+
+            // Scroll progress bar functionality
+            const scrollProgress = document.getElementById('scrollProgress');
+
+            function updateScrollProgress() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                scrollProgress.style.width = scrollPercent + '%';
+            }
+
+            window.addEventListener('scroll', updateScrollProgress);
+            updateScrollProgress();
 
             // Scroll to top button functionality
             const scrollToTopButton = document.getElementById('scrollToTop');
