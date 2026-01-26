@@ -1,0 +1,111 @@
+{
+  "profile": {
+    "photo": "./images/photo_5447506785196961111_y.jpg",
+    "social": {
+      "linkedin": "https://www.linkedin.com/in/muxammad-zikirzoda-303044310/",
+      "github": "https://github.com/iammaga",
+      "telegram": "https://t.me/Alg0rix",
+      "instagram": "https://www.instagram.com/magajr_/",
+      "email": "mailto:muxammad.zikirzoda@gmail.com"
+    }
+  },
+  "stats": {
+    "years": 5,
+    "projects": 46
+  },
+  "skills": [
+    { "name": "HTML", "icon": "html", "iconUrl": "https://skillicons.dev/icons?i=html" },
+    { "name": "CSS", "icon": "css", "iconUrl": "https://skillicons.dev/icons?i=css" },
+    { "name": "Tailwind", "icon": "tailwind", "iconUrl": "https://skillicons.dev/icons?i=tailwind" },
+    { "name": "Figma", "icon": "figma", "iconUrl": "https://skillicons.dev/icons?i=figma" },
+    { "name": "JavaScript", "icon": "js", "iconUrl": "https://skillicons.dev/icons?i=js" },
+    { "name": "Vue.js", "icon": "vue", "iconUrl": "https://skillicons.dev/icons?i=vue" },
+    { "name": "PHP", "icon": "php", "iconUrl": "https://skillicons.dev/icons?i=php" },
+    { "name": "Laravel", "icon": "laravel", "iconUrl": "https://skillicons.dev/icons?i=laravel" },
+    { "name": "MySQL", "icon": "mysql", "iconUrl": "https://skillicons.dev/icons?i=mysql" },
+    { "name": "PostgreSQL", "icon": "postgresql", "iconUrl": "https://skillicons.dev/icons?i=postgresql" },
+    { "name": "Oracle", "icon": "oracle", "iconUrl": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" },
+    { "name": "GitHub", "icon": "github", "iconUrl": "https://skillicons.dev/icons?i=github" },
+    { "name": "Postman", "icon": "postman", "iconUrl": "https://skillicons.dev/icons?i=postman" },
+    { "name": "Docker", "icon": "docker", "iconUrl": "https://skillicons.dev/icons?i=docker" },
+    { "name": "Kubernetes", "icon": "kubernetes", "iconUrl": "https://skillicons.dev/icons?i=kubernetes" },
+    { "name": "Redis", "icon": "redis", "iconUrl": "https://skillicons.dev/icons?i=redis" },
+    { "name": "GitHub Actions", "icon": "actions", "iconUrl": "https://skillicons.dev/icons?i=githubactions" },
+    { "name": "Linux", "icon": "linux", "iconUrl": "https://skillicons.dev/icons?i=linux" }
+  ],
+  "experience": [
+    { "id": "icb", "company": "ICB" },
+    { "id": "paykar", "company": "PAYKAR" },
+    { "id": "mentor", "company": "MENTOR" },
+    { "id": "livo", "company": "LIVO" },
+    { "id": "eniak", "company": "ENIAK" }
+  ],
+  "translations": {
+    "en": {
+      "profile": {
+        "name": "Muhammad Zikirzoda",
+        "description": "A Software Engineer who has developed countless innovative solutions."
+      },
+      "main": {
+        "title1": "SOFTWARE",
+        "title2": "ENGINEER",
+        "description": "I am passionate about software development and microservice architecture design, especially using Laravel. I am interested in process automation, increasing efficiency and maintaining clean architecture in projects."
+      },
+      "stats": {
+        "years": "YEARS OF<br>EXPERIENCE",
+        "projects": "PROJECTS<br>COMPLETED"
+      },
+      "experience": {
+        "title1": "5+ YEARS OF",
+        "title2": "EXPERIENCE",
+        "icb": "I work on the server side of the bank's corporate systems. I develop and support backend services, and participate in designing the architecture and integration of internal and external systems.<br>- Development and maintenance of backend logic (REST API);<br>- Database design and optimisation;<br>- Implementation of business logic and banking processes;<br>- Integration with external services and internal systems;<br>- Error handling, logging, improving service stability.<br>- Refactoring and support for existing code;<br>- Participation in code review and team development.<br>Skills:<br>- PHP, Laravel;<br>- REST API, MVC;<br>- MySQL / PostgreSQL / Oracle;<br>- Docker, deployment & server configuration;<br>- Git, Composer;<br>- Refactoring, logging, code review.",
+        "paykar": "I am fully responsible for the backend part of the project: from architecture design to deployment and support.<br>- I develop and maintain backend services on PHP;<br>- I design and optimize databases;<br>- I integrate external services and APIs;<br>- I maintain and improve existing functionality;<br>- I interact with the frontend team and product managers.<br>Skills:<br>- Laravel, PHP, MySQL;<br>- API integration;<br>- Working with Git and CI/CD<br>- Docker, deployment & server configuration.",
+        "mentor": "I explain the basics in simple language, give practice, support at the start. My goal is to make entry into IT understandable and accessible.",
+        "livo": "Worked on the Navbat project with full responsibility for the backend part, including database design and integration of external APIs.<br>- Development and support of the online booking system on Laravel;<br>- Integration with the SMS service Payvand for notifications;<br>- Access management and role system for clients and masters;<br>- Optimization of work with databases.<br>Skills:<br>- Laravel, PHP, MySQL;<br>- API integration;<br>- Working with Git and GitHub Actions;<br>- Deployment and configuration of environments.",
+        "eniak": "I worked at Eniak, where I worked on CMS-based projects and front-end development. My main tasks were creating and customizing websites, working with HTML, CSS, JavaScript, and integrating various plugins and modules. This experience helped me deepen my knowledge of web development and strengthen my skills in creating user interfaces."
+      },
+      "skills": {
+        "title1": "PROGRAMMING",
+        "title2": "SKILLS"
+      },
+      "footer": {
+        "made": "Made with",
+        "by": "by",
+        "name": "Muhammad Zikirzoda"
+      }
+    },
+    "ru": {
+      "profile": {
+        "name": "Мухаммад Зикирзода",
+        "description": "Инженер-программист, создавший множество инновационных решений."
+      },
+      "main": {
+        "title1": "ПРОГРАММИСТ",
+        "title2": "РАЗРАБОТЧИК",
+        "description": "Увлечен разработкой ПО и проектированием микросервисной архитектуры, особенно на Laravel. Фокусируюсь на автоматизации процессов, повышении эффективности и поддержании чистой архитектуры проектов."
+      },
+      "stats": {
+        "years": "ЛЕТ<br>ОПЫТА",
+        "projects": "ПРОЕКТОВ<br>ЗАВЕРШЕНО"
+      },
+      "experience": {
+        "title1": "5+ ЛЕТ",
+        "title2": "ОПЫТА",
+        "icb": "Занимаюсь backend-разработкой корпоративных банковских систем. Разрабатываю и поддерживаю серверные сервисы, проектирую архитектуру и интегрирую внутренние и внешние системы.<br>- Разработка и поддержка backend-логики (REST API)<br>- Проектирование и оптимизация баз данных<br>- Реализация бизнес-логики и банковских процессов<br>- Интеграция внешних сервисов и внутренних систем<br>- Обработка ошибок, логирование, повышение стабильности сервисов<br>- Рефакторинг и поддержка существующего кода<br>- Участие в code review и развитии команды<br>Технологии:<br>- PHP, Laravel<br>- REST API, MVC<br>- MySQL / PostgreSQL / Oracle<br>- Docker, деплой и настройка серверов<br>- Git, Composer<br>- Рефакторинг, логирование, code review",
+        "paykar": "Полная ответственность за backend-часть проекта: от проектирования архитектуры до развертывания и поддержки.<br>- Разработка и поддержка backend-сервисов на PHP<br>- Проектирование и оптимизация баз данных<br>- Интеграция внешних сервисов и API<br>- Поддержка и улучшение существующей функциональности<br>- Взаимодействие с frontend-командой и продакт-менеджерами<br>Технологии:<br>- Laravel, PHP, MySQL<br>- Интеграция API<br>- Работа с Git и CI/CD<br>- Docker, деплой и настройка серверов",
+        "mentor": "Объясняю основы простым языком, даю практические задания, поддерживаю на старте карьеры. Моя цель — сделать вход в IT понятным и доступным для каждого.",
+        "livo": "Работал над проектом Navbat с полной ответственностью за backend, включая проектирование БД и интеграцию внешних API.<br>- Разработка и поддержка системы онлайн-записи на Laravel<br>- Интеграция с SMS-сервисом Payvand для уведомлений<br>- Управление доступом и система ролей для клиентов и мастеров<br>- Оптимизация работы с базами данных<br>Технологии:<br>- Laravel, PHP, MySQL<br>- Интеграция API<br>- Работа с Git и GitHub Actions<br>- Деплой и настройка окружений",
+        "eniak": "Работал в Eniak над проектами на CMS и frontend-разработкой. Создавал и кастомизировал сайты, работал с HTML, CSS, JavaScript, интегрировал плагины и модули. Этот опыт помог углубить знания веб-разработки и укрепить навыки создания пользовательских интерфейсов."
+      },
+      "skills": {
+        "title1": "НАВЫКИ",
+        "title2": "ПРОГРАММИРОВАНИЯ"
+      },
+      "footer": {
+        "made": "Сделано с",
+        "by": "",
+        "name": "Мухаммад Зикирзода"
+      }
+    }
+  }
+}
