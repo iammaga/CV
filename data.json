@@ -10,7 +10,7 @@
     }
   },
   "stats": {
-    "years": 5,
+    "years": 8,
     "projects": 50
   },
   "skills": [
@@ -125,10 +125,6 @@
     {
       "id": "eniak",
       "company": "ENIAK"
-    },
-    {
-      "id": "new_1769421013352",
-      "company": "Новая компания"
     }
   ],
   "translations": {
@@ -153,8 +149,7 @@
         "paykar": "I am fully responsible for the backend part of the project: from architecture design to deployment and support.<br>- I develop and maintain backend services on PHP;<br>- I design and optimize databases;<br>- I integrate external services and APIs;<br>- I maintain and improve existing functionality;<br>- I interact with the frontend team and product managers.<br>Skills:<br>- Laravel, PHP, MySQL;<br>- API integration;<br>- Working with Git and CI/CD<br>- Docker, deployment & server configuration.",
         "mentor": "I explain the basics in simple language, give practice, support at the start. My goal is to make entry into IT understandable and accessible.",
         "livo": "Worked on the Navbat project with full responsibility for the backend part, including database design and integration of external APIs.<br>- Development and support of the online booking system on Laravel;<br>- Integration with the SMS service Payvand for notifications;<br>- Access management and role system for clients and masters;<br>- Optimization of work with databases.<br>Skills:<br>- Laravel, PHP, MySQL;<br>- API integration;<br>- Working with Git and GitHub Actions;<br>- Deployment and configuration of environments.",
-        "eniak": "I worked at Eniak, where I worked on CMS-based projects and front-end development. My main tasks were creating and customizing websites, working with HTML, CSS, JavaScript, and integrating various plugins and modules. This experience helped me deepen my knowledge of web development and strengthen my skills in creating user interfaces.",
-        "new_1769421013352": ""
+        "eniak": "I worked at Eniak, where I worked on CMS-based projects and front-end development. My main tasks were creating and customizing websites, working with HTML, CSS, JavaScript, and integrating various plugins and modules. This experience helped me deepen my knowledge of web development and strengthen my skills in creating user interfaces."
       },
       "skills": {
         "title1": "PROGRAMMING",
@@ -187,8 +182,7 @@
         "paykar": "Полная ответственность за backend-часть проекта: от проектирования архитектуры до развертывания и поддержки.<br>- Разработка и поддержка backend-сервисов на PHP<br>- Проектирование и оптимизация баз данных<br>- Интеграция внешних сервисов и API<br>- Поддержка и улучшение существующей функциональности<br>- Взаимодействие с frontend-командой и продакт-менеджерами<br>Технологии:<br>- Laravel, PHP, MySQL<br>- Интеграция API<br>- Работа с Git и CI/CD<br>- Docker, деплой и настройка серверов",
         "mentor": "Объясняю основы простым языком, даю практические задания, поддерживаю на старте карьеры. Моя цель — сделать вход в IT понятным и доступным для каждого.",
         "livo": "Работал над проектом Navbat с полной ответственностью за backend, включая проектирование БД и интеграцию внешних API.<br>- Разработка и поддержка системы онлайн-записи на Laravel<br>- Интеграция с SMS-сервисом Payvand для уведомлений<br>- Управление доступом и система ролей для клиентов и мастеров<br>- Оптимизация работы с базами данных<br>Технологии:<br>- Laravel, PHP, MySQL<br>- Интеграция API<br>- Работа с Git и GitHub Actions<br>- Деплой и настройка окружений",
-        "eniak": "Работал в Eniak над проектами на CMS и frontend-разработкой. Создавал и кастомизировал сайты, работал с HTML, CSS, JavaScript, интегрировал плагины и модули. Этот опыт помог углубить знания веб-разработки и укрепить навыки создания пользовательских интерфейсов.",
-        "new_1769421013352": ""
+        "eniak": "Работал в Eniak над проектами на CMS и frontend-разработкой. Создавал и кастомизировал сайты, работал с HTML, CSS, JavaScript, интегрировал плагины и модули. Этот опыт помог углубить знания веб-разработки и укрепить навыки создания пользовательских интерфейсов."
       },
       "skills": {
         "title1": "НАВЫКИ",
