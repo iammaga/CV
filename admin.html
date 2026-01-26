@@ -834,7 +834,17 @@
 
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.message || 'Failed to save');
+                    if (response.status === 404) {
+                        throw new Error('Файл не найден или токен не имеет прав на запись. Проверьте scope "repo" у токена.');
+                    } else if (response.status === 401) {
+                        throw new Error('Токен истёк или недействителен');
+                    } else if (response.status === 403) {
+                        throw new Error('Нет прав на запись. Токену нужен scope "repo"');
+                    } else if (response.status === 409) {
+                        throw new Error('Конфликт версий. Перезагрузите страницу и попробуйте снова.');
+                    } else {
+                        throw new Error(error.message || `Ошибка ${response.status}`);
+                    }
                 }
 
                 const result = await response.json();
