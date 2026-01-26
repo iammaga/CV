@@ -473,7 +473,10 @@
 
                 const fileData = await response.json();
                 fileSha = fileData.sha;
-                currentData = JSON.parse(atob(fileData.content));
+                // Правильное декодирование UTF-8 из base64
+                const bytes = Uint8Array.from(atob(fileData.content), c => c.charCodeAt(0));
+                const text = new TextDecoder('utf-8').decode(bytes);
+                currentData = JSON.parse(text);
 
                 // Store token in session
                 token = inputToken;
