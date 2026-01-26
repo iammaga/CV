@@ -1251,13 +1251,35 @@
         let cvData = null;
 
         async function loadCVData() {
+            // GitHub raw URL для актуальных данных
+            const githubRawUrl = 'https://raw.githubusercontent.com/iammaga/CV/main/data.json';
+            const cacheBuster = '?t=' + Date.now();
+
             try {
-                const response = await fetch('./data.json');
+                // Сначала пробуем загрузить из GitHub (всегда актуальные данные)
+                let response = await fetch(githubRawUrl + cacheBuster);
+
+                // Если GitHub недоступен, используем локальный файл
+                if (!response.ok) {
+                    console.log('GitHub unavailable, using local data.json');
+                    response = await fetch('./data.json');
+                }
+
                 if (!response.ok) throw new Error('Failed to load data.json');
                 cvData = await response.json();
                 applyDataToPage();
             } catch (error) {
                 console.error('Error loading CV data:', error);
+                // Fallback на локальный файл
+                try {
+                    const localResponse = await fetch('./data.json');
+                    if (localResponse.ok) {
+                        cvData = await localResponse.json();
+                        applyDataToPage();
+                    }
+                } catch (e) {
+                    console.error('Local fallback also failed:', e);
+                }
             }
         }
 
