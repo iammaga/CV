@@ -75,6 +75,11 @@
       "iconUrl": "https://skillicons.dev/icons?i=github"
     },
     {
+      "name": "GitLab",
+      "icon": "gitlab",
+      "iconUrl": "https://skillicons.dev/icons?i=gitlab"
+    },
+    {
       "name": "Postman",
       "icon": "postman",
       "iconUrl": "https://skillicons.dev/icons?i=postman"
@@ -103,6 +108,16 @@
       "name": "Linux",
       "icon": "linux",
       "iconUrl": "https://skillicons.dev/icons?i=linux"
+    },
+    {
+      "name": "Nginx",
+      "icon": "nginx",
+      "iconUrl": "https://skillicons.dev/icons?i=nginx"
+    },
+    {
+      "name": "Npm",
+      "icon": "npm",
+      "iconUrl": "https://skillicons.dev/icons?i=npm"
     }
   ],
   "experience": [
